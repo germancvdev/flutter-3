@@ -14,16 +14,19 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
 
   final settings = ValueNotifier(ThemeSettings(
-    sourceColor: Colors.lightBlue,
+    sourceColor: Colors.redAccent,
     themeMode: ThemeMode.system,
   ));
+
   @override
   Widget build(BuildContext context) {
+    print(settings.value.sourceColor.value);
     return DynamicColorBuilder(
       builder: (lightDynamic, darkDynamic) => ThemeProvider(
         lightDynamic: lightDynamic,
         darkDynamic: darkDynamic,
         settings: settings,
+        key: const Key('DynamicColor'),
         child: NotificationListener<ThemeSettingChange>(
           onNotification: (notification) {
             settings.value = notification.settings;
@@ -39,6 +42,10 @@ class _MyAppState extends State<MyApp> {
                 theme: theme.light(settings.value.sourceColor),
                 darkTheme: theme.dark(settings.value.sourceColor),
                 themeMode: theme.themeMode(),
+                // theme: ThemeData(
+                //   useMaterial3: true,
+                //   primarySwatch: Colors.pink,
+                // ),
                 routeInformationParser: appRouter.routeInformationParser,
                 routerDelegate: appRouter.routerDelegate,
               );

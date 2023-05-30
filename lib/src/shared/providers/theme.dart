@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:material_color_utilities/blend/blend.dart';
 // ignore: depend_on_referenced_packages
-import 'package:material_color_utilities/material_color_utilities.dart';
 
 class NoAnimationPageTransitionsBuilder extends PageTransitionsBuilder {
   const NoAnimationPageTransitionsBuilder();
@@ -42,6 +42,7 @@ class ThemeProvider extends InheritedWidget {
       TargetPlatform.linux: NoAnimationPageTransitionsBuilder(),
       TargetPlatform.macOS: NoAnimationPageTransitionsBuilder(),
       TargetPlatform.windows: NoAnimationPageTransitionsBuilder(),
+      TargetPlatform.fuchsia: NoAnimationPageTransitionsBuilder(),
     },
   );
 
@@ -70,8 +71,10 @@ class ThemeProvider extends InheritedWidget {
     final dynamicPrimary = brightness == Brightness.light
         ? lightDynamic?.primary
         : darkDynamic?.primary;
+
+    print([dynamicPrimary?.value, brightness.name]);
     return ColorScheme.fromSeed(
-      seedColor: dynamicPrimary ?? source(targetColor),
+      seedColor: source(targetColor),
       brightness: brightness,
     );
   }
@@ -151,6 +154,7 @@ class ThemeProvider extends InheritedWidget {
     return ThemeData.light().copyWith(
       pageTransitionsTheme: pageTransitionsTheme,
       colorScheme: colorScheme,
+      brightness: Brightness.light,
       appBarTheme: appBarTheme(colorScheme),
       cardTheme: cardTheme(),
       listTileTheme: listTileTheme(colorScheme),
@@ -169,6 +173,7 @@ class ThemeProvider extends InheritedWidget {
     return ThemeData.dark().copyWith(
       pageTransitionsTheme: pageTransitionsTheme,
       colorScheme: colorScheme,
+      brightness: Brightness.dark,
       appBarTheme: appBarTheme(colorScheme),
       cardTheme: cardTheme(),
       listTileTheme: listTileTheme(colorScheme),
@@ -183,6 +188,7 @@ class ThemeProvider extends InheritedWidget {
   }
 
   ThemeMode themeMode() {
+    print(settings.value.themeMode.name);
     return settings.value.themeMode;
   }
 
